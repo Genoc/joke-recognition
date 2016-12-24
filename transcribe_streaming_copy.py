@@ -31,6 +31,9 @@ from google.rpc import code_pb2
 import grpc
 import pyaudio
 from six.moves import queue
+import urllib2
+import json
+import os
 
 # Audio recording parameters
 RATE = 16000
