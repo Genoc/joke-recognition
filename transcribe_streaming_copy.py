@@ -198,6 +198,16 @@ def listen_print_loop(recognize_stream):
         else:
             print(transcript)
 
+            if re.search(r'\b(joke)\b', transcript, re.I):
+                print('Joke keyword detected!')
+                ret = urllib2.urlopen("http://api.icndb.com/jokes/random").read()
+                joke = json.loads(ret)
+                joke_string = joke["value"]["joke"]
+                joke_string2 = joke_string.replace("'","").replace("&quot;","")
+                print(joke_string2)
+                # os.system('say "' + joke_string2 + '"')
+                os.system('say "Hey Siri, reed my note from today."')
+                
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
