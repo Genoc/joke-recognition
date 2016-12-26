@@ -1,10 +1,22 @@
-import gym
+import tensorflow as tf
 import numpy as np
+<<<<<<< HEAD
 import tensorflow as tf
 import random
 import math
+=======
+import random
+import gym
+import math
+import matplotlib.pyplot as plt
+>>>>>>> f37c45f3408208597e062c2da6ccd1042ff75879
 
+def softmax(x):
+    e_x = np.exp(x - np.max(x))
+    out = e_x / e_x.sum()
+    return out
 
+<<<<<<< HEAD
 def policy_gradient():
     with tf.variable_scope("policy"):
         params = tf.get_variable("policy_parameters",[4,2])
@@ -21,6 +33,10 @@ def policy_gradient():
     
 def value_gradient():
     with tf.variable_scope("value"):
+=======
+def Q_model():
+    with tf.variable_scope("qmodel"):
+>>>>>>> f37c45f3408208597e062c2da6ccd1042ff75879
         state = tf.placeholder("float",[None,4])
         newvals = tf.placeholder("float",[None,1])
         w1 = tf.get_variable("w1",[4,10])
@@ -32,6 +48,7 @@ def value_gradient():
         diffs = calculated - newvals
         loss = tf.nn.l2_loss(diffs)
         optimizer = tf.train.AdamOptimizer(0.1).minimize(loss)
+<<<<<<< HEAD
         return calculated, state, newvals, optimizer, loss  
     
     
@@ -84,6 +101,20 @@ def run_episode(env, policy_grad, value_grad, sess):
 
         # update the value function towards new return
         update_vals.append(future_reward)
+=======
+        return calculated, state, newvals, optimizer, loss
+
+
+env = gym.make('CartPole-v0')
+q_mod = Q_model()
+sess = tf.InteractiveSession()
+sess.run(tf.initialize_all_variables())
+t = 0
+for _ in xrange(100):
+    reward = run_episode(env, policy_grad, value_grad, sess)
+    t += reward
+print t / 100
+>>>>>>> f37c45f3408208597e062c2da6ccd1042ff75879
 
     # update value function
     update_vals_vector = np.expand_dims(update_vals, axis=1)
