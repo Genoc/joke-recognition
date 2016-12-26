@@ -15,7 +15,7 @@ def Q_network():
     probabilities = tf.nn.softmax(Qout)
   
     # update the neural network based on new information
-    newQ = tf.placeholder(tf.zeros([2])) # Q of each action
+    newQ = tf.placeholder(tf.zeros([None,2])) # Q of each action
     loss = tf.reduce_sum(tf.square(newQ - Qout))
     trainer = tf.train.GradientDescentOptimizer(learning_rate=0.5)
     updateModel = trainer.minimize(loss)
