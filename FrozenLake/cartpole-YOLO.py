@@ -9,13 +9,13 @@ def Q_network():
   # neural network for Q(s,a)
   with tf.variable_scope("Q"):
     states = tf.placeholder(tf.float32, [None,4])
-    W = tf.Variable(tf.zeros[4,2])
-    B = tf.Variable(tf.zeros[2])
+    W = tf.Variable(tf.zeros([4,2]))
+    b = tf.Variable(tf.zeros([2]))
     Qout = tf.matmul(states, W) + b # returns 2 values; 1 for each action
     probabilities = tf.nn.softmax(Qout)
   
     # update the neural network based on new information
-    newQ = tf.placeholder(tf.zeros([2]) # Q of each action
+    newQ = tf.placeholder(tf.zeros([2])) # Q of each action
     loss = tf.reduce_sum(tf.square(newQ - Qout))
     trainer = tf.train.GradientDescentOptimizer(learning_rate=0.5)
     updateModel = trainer.minimize(loss)
@@ -50,8 +50,8 @@ def run_episode(env, sess, network):
     
     # Then, update the current (state, action)'s Q value using the max Q' value
     new_Q = reward + 0.9*maxQ
-    target_Qs = np.expand_dims(current_Q, axis=0)
-    target_Qs[0, action] = new_Q
+#    target_Qs = np.expand_dims(current_Q, axis=0)
+    target_Qs[action] = new_Q
     sess.run(updateModel, feed_dict = {newQ: target_Qs})
     
     # if we reach a terminal state, break and start a new episode
@@ -64,18 +64,26 @@ def main():
   sess = tf.InteractiveSession()
   sess.run(tf.global_variables_initializer())
   network = Q_network()
-    
+  
+  print "network initialized"
+  
   # run 2000 episodes
   for i in xrange(1):
     reward = run_episode(env, sess, network)
+    print reward
+    
     if reward == 200:
         print "reward 200 in " + str(i) + " iterations"
         break
-        
-  '''
+
+    print "done"
+
+main()
+
+'''
   t = 0
   for _ in xrange(1):
     # reward = run_episode(env, policy_grad, value_grad, sess)
     t += reward
   print t / 100
-  '''
+'''
